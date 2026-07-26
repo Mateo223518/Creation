@@ -3,11 +3,15 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Gallery, type Artwork } from "@/components/Gallery";
 
-const VIDEO_SRC = "/background.mp4";
+// Vite base path (deploys under /Creation/ on GitHub Pages)
+const base = import.meta.env.BASE_URL;
+const asset = (p: string) => `${base}${p}`;
+
+const VIDEO_SRC = asset("background.mp4");
 
 const artworks: Artwork[] = [
   {
-    src: "/artworks/baochai.jpg",
+    src: asset("artworks/baochai.jpg"),
     title: "薛宝钗",
     subtitle: "蘅芜君",
     en: "Xue Baochai",
@@ -16,7 +20,7 @@ const artworks: Artwork[] = [
     vertical: true,
   },
   {
-    src: "/artworks/daiyu.jpg",
+    src: asset("artworks/daiyu.jpg"),
     title: "林黛玉",
     subtitle: "潇湘妃子",
     en: "Lin Daiyu",
@@ -25,7 +29,7 @@ const artworks: Artwork[] = [
     vertical: true,
   },
   {
-    src: "/artworks/pipa-lady.jpg",
+    src: asset("artworks/pipa-lady.jpg"),
     title: "琵琶仕女",
     subtitle: "白描",
     en: "Lady with Pipa",
@@ -34,7 +38,7 @@ const artworks: Artwork[] = [
     vertical: true,
   },
   {
-    src: "/artworks/monkey-king.jpg",
+    src: asset("artworks/monkey-king.jpg"),
     title: "齐天大圣",
     subtitle: "孙悟空",
     en: "Monkey King",
@@ -43,7 +47,7 @@ const artworks: Artwork[] = [
     vertical: false,
   },
   {
-    src: "/artworks/christmas-tree.jpg",
+    src: asset("artworks/christmas-tree.jpg"),
     title: "圣诞树",
     subtitle: "水彩小品",
     en: "Christmas Tree",
@@ -52,7 +56,7 @@ const artworks: Artwork[] = [
     vertical: false,
   },
   {
-    src: "/artworks/cat-sketch.jpg",
+    src: asset("artworks/cat-sketch.jpg"),
     title: "猫",
     subtitle: "铅笔素描",
     en: "Cat",

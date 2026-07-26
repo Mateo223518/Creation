@@ -11,8 +11,11 @@ const VIDEO_SRC = asset("background.mp4");
 const VIDEO_SRC_MOBILE = asset("background-mobile.mp4");
 const VIDEO_POSTER = asset("bg-poster.jpg");
 
-// 是否为移动端（窄屏），用于选更小的视频源
-const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+// 是否为窄屏设备（手机/平板），用于选更小的视频源
+// 平板宽度通常在 768–1024px，加载 18MB 大视频会卡顿，统一走压缩版
+const isMobile =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 1024px)").matches;
 
 const artworks: Artwork[] = [
   {

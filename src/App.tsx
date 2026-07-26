@@ -342,6 +342,31 @@ function Footer() {
 
 function App() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // 移动端兼容：iOS Safari 等需手动触发 play
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const tryPlay = () => {
+      v.play().catch(() => {
+        // 静默失败，首次交互后再尝试
+      });
+    };
+    tryPlay();
+    // 首次用户交互后再次尝试播放
+    const onFirstInteract = () => {
+      tryPlay();
+      window.removeEventListener("touchend", onFirstInteract);
+      window.removeEventListener("click", onFirstInteract);
+    };
+    window.addEventListener("touchend", onFirstInteract, { once: true });
+    window.addEventListener("click", onFirstInteract, { once: true });
+    return () => {
+      window.removeEventListener("touchend", onFirstInteract);
+      window.removeEventListener("click", onFirstInteract);
+    };
+  }, []);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -355,11 +380,14 @@ function App() {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
         className="fixed inset-0 z-0 h-full w-full object-cover"
+        aria-hidden="true"
       >
         <source src={VIDEO_SRC} type="video/mp4" />
       </video>

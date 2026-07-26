@@ -349,27 +349,58 @@ function App() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // 移动端兼容：iOS Safari 等需手动触发 play
+  // 移动端视频自动播放：多重保险
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+
+    // 强制静音（某些浏览器需要属性而非属性值）
+    v.muted = true;
+    v.defaultMuted = true;
+
     const tryPlay = () => {
-      v.play().catch(() => {
-        // 静默失败，首次交互后再尝试
-      });
+      const p = v.play();
+      if (p && typeof p.then === "function") {
+        p.catch(() => {
+          // 自动播放被拦截，等用户交互后再播
+        });
+      }
     };
+
+    // 1. 立即尝试
     tryPlay();
-    // 首次用户交互后再次尝试播放
-    const onFirstInteract = () => {
+
+    // 2. 数据加载后尝试
+    const onCanPlay = () => tryPlay();
+    v.addEventListener("canplay", onCanPlay);
+    v.addEventListener("canplaythrough", onCanPlay);
+    v.addEventListener("loadeddata", onCanPlay);
+
+    // 3. 首次用户交互后尝试（iOS Safari 必需）
+    const onInteract = () => {
       tryPlay();
-      window.removeEventListener("touchend", onFirstInteract);
-      window.removeEventListener("click", onFirstInteract);
+      window.removeEventListener("touchend", onInteract);
+      window.removeEventListener("touchstart", onInteract);
+      window.removeEventListener("click", onInteract);
     };
-    window.addEventListener("touchend", onFirstInteract, { once: true });
-    window.addEventListener("click", onFirstInteract, { once: true });
+    window.addEventListener("touchend", onInteract, { once: true });
+    window.addEventListener("touchstart", onInteract, { once: true });
+    window.addEventListener("click", onInteract, { once: true });
+
+    // 4. 页面回到前台后恢复播放
+    const onVis = () => {
+      if (!document.hidden) tryPlay();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     return () => {
-      window.removeEventListener("touchend", onFirstInteract);
-      window.removeEventListener("click", onFirstInteract);
+      v.removeEventListener("canplay", onCanPlay);
+      v.removeEventListener("canplaythrough", onCanPlay);
+      v.removeEventListener("loadeddata", onCanPlay);
+      window.removeEventListener("touchend", onInteract);
+      window.removeEventListener("touchstart", onInteract);
+      window.removeEventListener("click", onInteract);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
 

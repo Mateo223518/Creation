@@ -18,21 +18,58 @@ interface GalleryProps {
 export function Gallery({ artworks, onOpen }: GalleryProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // 滚轮纵向转横向滚动
+  // 一格一画轮播：滚轮每格切到下/上一张
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    let locked = false;
+    const unlock = () => (locked = false);
+    const figures = () =>
+      Array.from(track.querySelectorAll<HTMLElement>("figure[data-index]"));
+
     const onWheel = (e: WheelEvent) => {
-      // 优先用纵向滚轮驱动横向
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        track.scrollLeft += e.deltaY;
-      }
+      // 只拦截纵向滚轮（触摸板横向手势保留原生行为）
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      if (locked) return;
+
+      const items = figures();
+      if (!items.length) return;
+
+      // 找当前最接近中心的一张
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let cur = 0;
+      let best = Infinity;
+      items.forEach((el, i) => {
+        const mid = el.offsetLeft + el.offsetWidth / 2;
+        const d = Math.abs(mid - center);
+        if (d < best) {
+          best = d;
+          cur = i;
+        }
+      });
+
+      const next = e.deltaY > 0 ? Math.min(cur + 1, items.length - 1) : Math.max(cur - 1, 0);
+      if (next === cur) return;
+
+      locked = true;
+      window.addEventListener("scroll", unlock, { once: true, passive: true });
+      // 临时后备，避免中断或连发
+      setTimeout(unlock, 650);
+
+      items[next].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
     };
 
     track.addEventListener("wheel", onWheel, { passive: false });
-    return () => track.removeEventListener("wheel", onWheel);
+    return () => {
+      track.removeEventListener("wheel", onWheel);
+      window.removeEventListener("scroll", unlock);
+    };
   }, []);
 
   return (
@@ -62,6 +99,7 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
         {artworks.map((art, i) => (
           <figure
             key={art.src}
+            data-index={i}
             className="group relative flex shrink-0 snap-center cursor-pointer flex-col items-center"
             onClick={() => onOpen(i)}
           >

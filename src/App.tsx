@@ -8,6 +8,11 @@ const base = import.meta.env.BASE_URL;
 const asset = (p: string) => `${base}${p}`;
 
 const VIDEO_SRC = asset("background.mp4");
+const VIDEO_SRC_MOBILE = asset("background-mobile.mp4");
+const VIDEO_POSTER = asset("bg-poster.jpg");
+
+// 是否为移动端（窄屏），用于选更小的视频源
+const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
 const artworks: Artwork[] = [
   {
@@ -385,11 +390,13 @@ function App() {
         loop
         muted
         playsInline
+        webkit-playsinline="true"
         preload="auto"
+        poster={VIDEO_POSTER}
         className="fixed inset-0 z-0 h-full w-full object-cover"
         aria-hidden="true"
       >
-        <source src={VIDEO_SRC} type="video/mp4" />
+        <source src={isMobile ? VIDEO_SRC_MOBILE : VIDEO_SRC} type="video/mp4" />
       </video>
 
       <div className="fixed inset-0 z-0 bg-background/50" />

@@ -17,12 +17,12 @@ export function Hero() {
       </h1>
 
       <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Matthew 的个人画作陈列。以数字工笔记录古典人物与日常诗意，
-        在留白与墨色之间，安放一份安静的注视。
+        笔起墨落，古人与日常皆入画来。
+        留白处，自有千言。
       </p>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground/70">
-        A personal gallery of paintings by Matthew — classical figures and
-        quiet moments, rendered in digital ink.
+        Where brush meets ink, the classical and the everyday become image.
+        In the blank space, a quiet contemplation.
       </p>
 
       <a

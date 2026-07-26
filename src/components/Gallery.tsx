@@ -18,7 +18,7 @@ interface GalleryProps {
 export function Gallery({ artworks, onOpen }: GalleryProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // 一格一画轮播：滚轮每格切到下/上一张
+  // 一格一画轮播：gallery 进入视口时滚轮切画，首/尾放行让页面继续垂直滚动
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -27,17 +27,8 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
     const unlock = () => (locked = false);
     const figures = () =>
       Array.from(track.querySelectorAll<HTMLElement>("figure[data-index]"));
-
-    const onWheel = (e: WheelEvent) => {
-      // 只拦截纵向滚轮（触摸板横向手势保留原生行为）
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      e.preventDefault();
-      if (locked) return;
-
+    const curIndex = () => {
       const items = figures();
-      if (!items.length) return;
-
-      // 找当前最接近中心的一张
       const center = track.scrollLeft + track.clientWidth / 2;
       let cur = 0;
       let best = Infinity;
@@ -49,15 +40,36 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
           cur = i;
         }
       });
+      return { cur, items };
+    };
 
-      const next = e.deltaY > 0 ? Math.min(cur + 1, items.length - 1) : Math.max(cur - 1, 0);
+    const onWheel = (e: WheelEvent) => {
+      // 只管纵向滚轮（触摸板横向手势保留原生行为）
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      // gallery 是否大致占据视口
+      const rect = track.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const inView = rect.top < vh * 0.6 && rect.bottom > vh * 0.4;
+      if (!inView) return; // 不在视口，放行垂直滚动
+
+      const { cur, items } = curIndex();
+      if (!items.length) return;
+      const goingDown = e.deltaY > 0;
+      // 首张向上 / 末张向下时放行，让用户进出 gallery
+      if ((cur === 0 && !goingDown) || (cur === items.length - 1 && goingDown)) {
+        return;
+      }
+
+      e.preventDefault();
+      if (locked) return;
+      const next = goingDown
+        ? Math.min(cur + 1, items.length - 1)
+        : Math.max(cur - 1, 0);
       if (next === cur) return;
 
       locked = true;
-      window.addEventListener("scroll", unlock, { once: true, passive: true });
-      // 临时后备，避免中断或连发
       setTimeout(unlock, 650);
-
       items[next].scrollIntoView({
         behavior: "smooth",
         block: "nearest",
@@ -65,11 +77,8 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
       });
     };
 
-    track.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      track.removeEventListener("wheel", onWheel);
-      window.removeEventListener("scroll", unlock);
-    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   return (

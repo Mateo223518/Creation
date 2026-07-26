@@ -210,7 +210,7 @@ function Lightbox({
         <img
           src={art.src}
           alt={`${art.title} · ${art.en}`}
-          className="max-h-[70vh] w-auto select-none object-contain shadow-2xl"
+          className="max-h-[55vh] w-auto select-none object-contain shadow-2xl md:max-h-[70vh]"
           draggable={false}
           onDoubleClick={onDoubleClick}
           onMouseDown={onMouseDown}
@@ -249,7 +249,8 @@ function Lightbox({
           </p>
         </div>
         <p className="mt-4 text-[10px] uppercase tracking-[0.3em] text-muted-foreground/40">
-          滚轮缩放 · 双击放大 · 拖动平移
+          <span className="hidden md:inline">滚轮缩放 · 双击放大 · 拖动平移</span>
+          <span className="md:hidden">双击放大 · 左右切换</span>
         </p>
       </div>
 

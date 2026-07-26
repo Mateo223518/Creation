@@ -27,7 +27,7 @@ export function Hero() {
 
       <a
         href="#works"
-        className="liquid-glass animate-fade-rise-delay-2 mt-12 cursor-pointer rounded-full px-14 py-5 text-base text-foreground transition-transform duration-200 hover:scale-[1.03]"
+        className="liquid-glass animate-fade-rise-delay-2 mt-12 cursor-pointer rounded-full px-10 py-4 text-base text-foreground transition-transform duration-200 hover:scale-[1.03] md:px-14 md:py-5"
       >
         浏览作品 · View Works
       </a>

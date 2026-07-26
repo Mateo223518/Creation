@@ -115,7 +115,7 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
           >
             <div
               className={`relative overflow-hidden rounded-sm shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] ${
-                art.vertical ? "h-[68vh] w-auto" : "h-[60vh] w-auto"
+                art.vertical ? "h-[52vh] w-auto md:h-[68vh]" : "h-[46vh] w-auto md:h-[60vh]"
               }`}
             >
               <img
@@ -161,7 +161,8 @@ export function Gallery({ artworks, onOpen }: GalleryProps) {
       <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <p className="flex items-center gap-3 text-xs text-muted-foreground/60">
           <span className="inline-block h-px w-10 bg-muted-foreground/40" />
-          滚动浏览 · Scroll to explore
+          <span className="hidden md:inline">滚动浏览 · Scroll to explore</span>
+          <span className="md:hidden">左右滑动 · Swipe to explore</span>
           <span className="inline-block h-px w-10 bg-muted-foreground/40" />
         </p>
       </div>

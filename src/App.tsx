@@ -16,7 +16,7 @@ const artworks: Artwork[] = [
     subtitle: "蘅芜君",
     en: "Xue Baochai",
     desc: "好风凭借力，送我上青云",
-    year: "2025",
+    year: "2025.11.27",
     vertical: true,
   },
   {
@@ -25,7 +25,7 @@ const artworks: Artwork[] = [
     subtitle: "潇湘妃子",
     en: "Lin Daiyu",
     desc: "竹影潇湘，泪尽而终",
-    year: "2025",
+    year: "2025.11.30",
     vertical: true,
   },
   {
@@ -34,7 +34,7 @@ const artworks: Artwork[] = [
     subtitle: "白描",
     en: "Lady with Pipa",
     desc: "飞天飘带，琵琶半掩",
-    year: "2025",
+    year: "2026.04.11",
     vertical: true,
   },
   {
@@ -43,7 +43,7 @@ const artworks: Artwork[] = [
     subtitle: "孙悟空",
     en: "Monkey King",
     desc: "金箍棒起，旌旗猎猎",
-    year: "乙巳仲春",
+    year: "2026.03.19",
     vertical: false,
   },
   {
@@ -52,7 +52,7 @@ const artworks: Artwork[] = [
     subtitle: "水彩小品",
     en: "Christmas Tree",
     desc: "冬日梦境，星辉点点",
-    year: "2024",
+    year: "2025.12.25",
     vertical: false,
   },
   {
@@ -61,7 +61,7 @@ const artworks: Artwork[] = [
     subtitle: "铅笔素描",
     en: "Cat",
     desc: "静坐观人，眼波流转",
-    year: "2024",
+    year: "2026.04.24",
     vertical: false,
   },
 ];

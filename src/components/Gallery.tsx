@@ -5,6 +5,7 @@ export interface Artwork {
   title: string;
   subtitle: string;
   en: string;
+  enDesc?: string;
   desc: string;
   year: string;
   vertical: boolean;

@@ -55,10 +55,10 @@ const artworks: Artwork[] = [
     title: "圣诞树",
     subtitle: "水彩小品",
     en: "Christmas Tree",
-    desc: "冬夜窗前，圣诞树亮起暖光，星辉点点落在未眠人的肩上。水彩晕染开的，是雪意、是岁末、是漂泊者忽然柔软的一刻。不必有故事，那一点温热的光，就足以把整个冬天照亮。",
-    enDesc: "By the window on a winter night, the tree glows warm, stray stars of light settling on the shoulders of one who cannot sleep. Watercolor spreads into snow-sense, year-end, the sudden softening of a wanderer. It needs no story — that one warm glow is enough to light the whole winter through.",
+    desc: "冬夜窗前，圣诞树亮起暖光，顶上一颗星，树下一句手写的 “Merry Christmas”。水彩晕染开的，是雪意、是岁末、是漂泊者忽然柔软的一刻。不必有故事，那一点温热的光，就足以把整个冬天照亮。",
+    enDesc: "By the window on a winter night, the tree glows warm, a single star at its crown and beneath it a handwritten “Merry Christmas.” Watercolor spreads into snow-sense, year-end, the sudden softening of a wanderer. It needs no story — that one warm glow is enough to light the whole winter through.",
     year: "2025.12.25",
-    vertical: false,
+    vertical: true,
   },
   {
     src: asset("artworks/cat-sketch.jpg"),

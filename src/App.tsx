@@ -323,10 +323,10 @@ function Footer() {
         <div className="flex flex-col items-center gap-3 md:items-end">
           <p className="text-sm text-muted-foreground">联系 · Contact</p>
           <a
-            href="mailto:hello@matthew.art"
+            href="mailto:13902545360@139.com"
             className="text-sm text-foreground/80 transition-colors hover:text-foreground"
           >
-            hello@matthew.art
+            13902545360@139.com
           </a>
           <p className="text-xs text-muted-foreground/50">
             © {new Date().getFullYear()} Matthew. All works reserved.

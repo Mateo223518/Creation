@@ -1,13 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
-  base: "/Creation/",
+  // Override with VITE_BASE_PATH when deploying to a different repository or domain.
+  base: process.env.VITE_BASE_PATH || "/Creation/",
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
 });

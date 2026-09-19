@@ -10,25 +10,51 @@ interface BackgroundVideoProps {
 
 export function BackgroundVideo({ reducedMotion }: BackgroundVideoProps) {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
-  const [shouldLoad, setShouldLoad] = useState(false);
+  // Render the video as soon as the first client render allows it. The poster
+  // remains visible while the browser buffers the first frames.
+  const [shouldLoad, setShouldLoad] = useState(!reducedMotion);
 
   useEffect(() => {
-    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean } }
+    ).connection;
+
     if (reducedMotion || connection?.saveData) {
       setShouldLoad(false);
       return;
     }
-    const timer = window.setTimeout(() => setShouldLoad(true), 900);
-    return () => window.clearTimeout(timer);
+
+    setShouldLoad(true);
   }, [reducedMotion]);
 
   const poster = asset("bg-poster.jpg");
+
   return (
     <>
-      <div className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url(" + poster + ")" }} aria-hidden="true" />
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url(" + poster + ")" }}
+        aria-hidden="true"
+      />
+
       {shouldLoad && (
-        <video key={isSmallScreen ? "small" : "large"} autoPlay loop muted playsInline preload="metadata" poster={poster} className="fixed inset-0 z-0 h-full w-full object-cover" aria-hidden="true">
-          <source src={asset(isSmallScreen ? "background-mobile.mp4" : "background.mp4")} type="video/mp4" />
+        <video
+          key={isSmallScreen ? "small" : "large"}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster={poster}
+          className="fixed inset-0 z-0 h-full w-full object-cover"
+          aria-hidden="true"
+        >
+          <source
+            src={asset(
+              isSmallScreen ? "background-mobile.mp4" : "background.mp4"
+            )}
+            type="video/mp4"
+          />
         </video>
       )}
     </>

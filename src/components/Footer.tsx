@@ -2,9 +2,9 @@ export function Footer() {
   return (
     <footer
       id="contact"
-      className="relative z-10 border-t border-white/10 px-6 py-20 md:px-8 md:py-24"
+      className="relative z-10 flex min-h-[100svh] items-center border-t border-white/10 bg-black/25 px-6 py-20 md:px-8 md:py-24"
     >
-      <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[1fr_auto] md:items-end">
+      <div className="mx-auto grid w-full max-w-7xl gap-16 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
         <div className="max-w-xl">
           <p className="mb-5 text-xs uppercase tracking-[0.4em] text-muted-foreground">
             Contact · 联系
